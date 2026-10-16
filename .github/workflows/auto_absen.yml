@@ -1,0 +1,48 @@
+name: Siprakerin Auto Absen
+
+on:
+  schedule:
+    # 1. Absen: Setiap hari jam 10:00 WIB (03:00 UTC)
+    - cron: '0 3 * * *'
+    # 2. Cek Collision Libur Nasional: Setiap hari jam 23:59 WIB (16:59 UTC)
+    - cron: '59 16 * * *'
+  workflow_dispatch: # Mengizinkan pengujian manual kapan saja via tombol di tab Actions
+
+jobs:
+  absen:
+    name: Eksekusi Bot Siprakerin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Jalankan Bot
+        env:
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+          JAM_ABSEN_WIB: ${{ secrets.JAM_ABSEN_WIB }}
+          HARI_LIBUR: ${{ secrets.HARI_LIBUR }}
+          TANGGAL_LIBUR: ${{ secrets.TANGGAL_LIBUR }}
+          KEGIATAN_SETIAP_HARI: ${{ secrets.KEGIATAN_SETIAP_HARI }}
+          KEGIATAN_SENIN: ${{ secrets.KEGIATAN_SENIN }}
+          KEGIATAN_SELASA: ${{ secrets.KEGIATAN_SELASA }}
+          KEGIATAN_RABU: ${{ secrets.KEGIATAN_RABU }}
+          KEGIATAN_KAMIS: ${{ secrets.KEGIATAN_KAMIS }}
+          KEGIATAN_JUMAT: ${{ secrets.KEGIATAN_JUMAT }}
+          KEGIATAN_SABTU: ${{ secrets.KEGIATAN_SABTU }}
+          KEGIATAN_MINGGU: ${{ secrets.KEGIATAN_MINGGU }}
+        run: |
+          # Gunakan github.event.schedule agar tidak terpengaruh delay antrean runner GitHub
+          if [ "${{ github.event.schedule }}" = "59 16 * * *" ]; then
+            echo " Menjalankan dalam mode Cek Collision Libur Nasional (23:59 WIB)..."
+            node index.js --check-collision
+          else
+            echo " Menjalankan dalam mode Absen Harian..."
+            node index.js
+          fi

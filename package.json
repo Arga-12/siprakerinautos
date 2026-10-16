@@ -1,0 +1,18 @@
+{
+  "name": "siprakerin-auto-absen",
+  "version": "2.0.0",
+  "description": "Bot Otomatisasi Absensi Jurnal Harian Siprakerin via GitHub Actions & Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "siprakerin",
+    "absen-otomatis",
+    "github-actions"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
