@@ -1,10 +1,11 @@
 # How to Use
 
-Github workflows setup
+Github workflows setup:
+https://medium.com/@argarill226/how-to-setup-with-github-workflows-d2add32ff1ef
 
 # Run it locally with:
 
-`Node js` : 18+
+`Node js` : 18+ `Jangan lupa NPM install kalau local`
 
    ```bash
    cp .env.example .env
